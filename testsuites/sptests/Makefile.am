@@ -26,7 +26,7 @@ _SUBDIRS = \
     spintrcritical09 spintrcritical10 spintrcritical11 spintrcritical12 \
     spintrcritical13 spintrcritical14 spintrcritical15 spintrcritical16 \
     spintrcritical17 spintrcritical18 spmkdir spmountmgr01 spheapprot \
-    sppagesize spsem01 spsem02 spsimplesched01 spsimplesched02 \
+    sppagesize spsem01 spsem02 spsem04 spsimplesched01 spsimplesched02 \
     spsimplesched03 spnsext01 spedfsched01 spedfsched02 spedfsched03 \
     spcbssched01 spcbssched02 spcbssched03 spqreslib sptimespec01 \
     spregion_err01 sppartition_err01 spratemon_err01 spintr_err01 \

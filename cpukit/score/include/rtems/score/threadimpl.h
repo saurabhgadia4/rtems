@@ -396,6 +396,96 @@ typedef bool ( *Thread_Change_priority_filter )(
 );
 
 /**
+ * @brief Changes the priority of a holder thread.
+ *
+ * It is the wrapper function for updating priority of holder thread.
+ *
+ * @param[in] holder This thread is holder of mutex.
+ * @param[in] the_mutex It is the mutex which is acquired by the holder 
+ * thread and executing thread is contending on it.
+ * @param[in] new_priority It is the current_priority of executing thread.
+ * @param[in] prepend_it In case this is true, then the thread is prepended to
+ * its priority group in its scheduler instance, otherwise it is appended.
+ * 
+ * @note This function is only valid for uniprocessor targets.
+ */
+void _Thread_Change_priority_UP(
+  Thread_Control   *holder,
+  CORE_mutex_Control  *the_mutex,
+  Priority_Control  new_priority,
+  bool prepend_it
+);
+
+/**
+ * @brief Updates the recorded priority_before and current_priority of thread
+ * 
+ * It goes through the list of acquired mutex by the holder thread and checks
+ * the priority_before recorded while holder acquired that mutex. If
+ * priority_before is greater than the contending executing thread then
+ * it changes the priority_before to executing thread's current_priority. This
+ * ensure proper stepdown of priority to avoid priority inversion for
+ * priority inheritance discipline mutex.
+ *
+ * @param[in] holder This thread is holder of mutex on which executing thread
+ * is contending.
+ * @param[in] mutex_queue It consists of node chained to the mutex list 
+ * maintained be Thread_Control.
+ * @param[in] new_priority It is the priority of executing thread.
+ * @param[in] lock_context The lock context used for the corresponding lock
+ * release.
+ * @param[in] prepend_it In case this is true, then the thread is prepended to
+ * its priority group in its scheduler instance, otherwise it is appended.
+ *
+ * @note This function is only valid for uniprocessor targets.
+ */
+void _Thread_Update_Priority_UP(
+  Thread_Control   *holder,
+  CORE_mutex_order_list  *mutex_queue,
+  Priority_Control  new_priority,
+  ISR_lock_Context    *lock_context,
+  bool prepend_it
+);
+
+/**
+ * @brief Updates priorities recorded in mutex list of holder thread.
+ * 
+ * @param[in] holder This thread is holder of mutex on which executing thread
+ * is contending.
+ * @param[in] mutex_queue It consists of node chained to the mutex list 
+ * maintained be Thread_Control.
+ * @param[in] new_priority It is the priority of executing thread.
+ * @param[out] Priority_StatusIt returns whether to update current_priority
+ * of holder thread.
+ *
+ * @note This function is only valid for uniprocessor targets.
+ */
+Priority_Status _Thread_Update_Rec_Priority_UP(
+  Thread_Control   *holder,
+  CORE_mutex_order_list  *mutex_queue,
+  Priority_Control  new_priority
+);
+
+/**
+ * @brief Validates the current_priority of executing thread.
+ * 
+ * It validates current_priority of executing thread against priority of 
+ * top most waited thread on mutexes acquired by executing thread. It
+ * should be paired with unlock/release operation and both operations should
+ * be togetherly atomic for correctness. It is developed for checking of
+ * priority inversion problem. 
+ * 
+ * @param[in] holder This thread is holder of mutex on which executing thread
+ * is contending.
+ * @param[out] Priority_Status It returns the status of current_priorty
+ * of executing thread.
+ *
+ * @note This function is only valid for uniprocessor targets.
+ */
+Priority_Status _Thread_Validate_Priority(
+  Thread_Control *executing
+);
+
+/**
  * @brief Changes the priority of a thread if allowed by the filter function.
  *
  * It changes current priority of the thread to the new priority in case the

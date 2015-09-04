@@ -55,6 +55,13 @@ extern "C" {
  */
 typedef uint32_t   Priority_Control;
 
+typedef enum {
+	PRIORITY_STATUS_NORMAL,
+	PRIORITY_STATUS_CHANGED,
+	PRIORITY_STATUS_NOT_CHANGED,
+	PRIORITY_STATUS_INVERSION_ERROR
+} Priority_Status;
+
 /** This defines the highest (most important) thread priority. */
 #define PRIORITY_MINIMUM      0
 

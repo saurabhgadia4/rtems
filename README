@@ -22,3 +22,4 @@ discussions:
 See https://devel.rtems.org/ to view existing or file a new issue
 report ticket.
 
+This branch is for fixing problem of priority inversion caused by nested mutex.

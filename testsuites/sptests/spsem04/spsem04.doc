@@ -1,0 +1,27 @@
+This test demonstrates priority inheritance with multiple locks and threads.
+
+The scenario consists of 3 Task s of different priority and 2 semaphore/mutexes
+using priority inheritance. The scenario is:
+
+Task  1 has priority 36. Task  2 has priority 34. Task  3 has priority 32.
+
+Throughout the course following actions are to be executed:
+
+Task 1 acauires semaphore S0, Task 2 acquires S1 and S0 and Task 3 acquires S1.
+
+
+1. Task 1  acquires semaphore S0 with priority 36.
+2. Task 1 spawns Task 2 having priority 34.
+3. Task 2 takes over as it has higher priority than Task 1.
+4. Task 2 acquires semaphore S1 with priority 34.
+5. Task 2 tries to acquire S0 but it is locked so promotes Task 1 priority to 34.
+6. Task 1 gains control and now creates Task 3 having 32.
+7. Task 3 takes over and tries to acquire semaphore S1. But it is acquired by Task 2.
+8. Task 3 promotes Task 2 priority to 32. But it observe that Task 2 is also waiting on semaphore S0 held by Task 1.
+9. Task 3 promotes Task 1 priority to 32 as well. (Indirect reference case).
+10. Task 1 get control. It releases semaphore S0 and now its priority becomes 36 so Task 2 takes over.
+11. Task 2 acquires semaphore S0. 
+12. Task 2 releases S0 and S1. And its priority now becomes 34(real priority)
+13. Task 3 takes over. It acquires S1. Releases S1 and suspends self.
+14. Task 2 gets control. It also suspends self.
+15. Task 1 gets control and exits the test.

@@ -1,0 +1,26 @@
+*** BEGIN OF TEST SPSEM 4 ***
+init: S0 created
+init: S1 created
+init: TA01 created with priority 36
+init: TA02 created with priority 34
+init: TA03 created with priority 32
+TA01: started with priority 36
+TA01: priority 36, holding S0
+TA02: started with priority 34
+TA02: priority 34, holding S1
+TA01: priority 34, holding S0 and now creating TA03
+TA03: started with priority 32
+TA01: priority 32 Releasing s0
+TA02: priority 32, holding S1,S0
+TA02: priority 32 before releasing S0
+TA02: priority 32 after releasing S0
+TA02: priority 32 before releasing S1
+TA03: priority 32, holding S1
+TA03: priority 32
+TA03: suspending
+TA02: priority 34 after releasing S1
+TA02: suspending
+TA01: priority 36
+TA01: exiting
+*** END OF TEST SPSEM 4 ***
+[Inferior 1 (process 42000) exited normally]
